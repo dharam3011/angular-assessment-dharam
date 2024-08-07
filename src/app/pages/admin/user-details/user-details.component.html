@@ -1,0 +1,518 @@
+<div class="container">
+  <h3>Job Application</h3>
+</div>
+<!-- tab-form.component.html -->
+<div class="container mt-4">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'basicDetails'"
+        (click)="selectTab('basicDetails')"
+      >
+        Basic Details
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'education'"
+        (click)="selectTab('education')"
+      >
+        Education Details
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'workExperience'"
+        (click)="selectTab('workExperience')"
+      >
+        Work Experience
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'technicalExperience'"
+        (click)="selectTab('technicalExperience')"
+      >
+        Technical Experience
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'knownLanguages'"
+        (click)="selectTab('knownLanguages')"
+      >
+        Known Languages
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'preferences'"
+        (click)="selectTab('preferences')"
+      >
+        Preferences
+      </a>
+    </li>
+  </ul>
+  <form [formGroup]="appForm" (ngSubmit)="onSubmit()" class="container mt-4">
+    <div class="tab-content mt-3">
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'basicDetails'"
+        [class.active]="activeTab === 'basicDetails'"
+      >
+        <!-- Basic Details -->
+        <fieldset formGroupName="basicDetails" class="mb-4">
+          <div class="row">
+            <div class="col-md-7 mb-2">
+              <label for="name">Name:</label>
+              <input id="name" formControlName="name" class="form-control" />
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="email">Email:</label>
+              <input id="email" formControlName="email" class="form-control" />
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="address">Address:</label>
+              <input
+                id="address"
+                formControlName="address"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="gender">Gender:</label>
+              <select id="gender" formControlName="gender" class="form-control">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="contact">Contact:</label>
+              <input
+                id="contact"
+                formControlName="contact"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextTab('education')"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'education'"
+        [class.active]="activeTab === 'education'"
+      >
+        <!-- Education Details -->
+        <fieldset formArrayName="education" class="mb-4">
+          <div
+            *ngFor="let edu of education.controls; let i = index"
+            [formGroupName]="i"
+            class="mb-3 border p-3"
+          >
+            <div class="row">
+              <div class="col-md-7 mb-2">
+                <label for="board-{{ i }}">Board/University:</label>
+                <input
+                  id="board-{{ i }}"
+                  formControlName="board"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label for="year-{{ i }}">Year:</label>
+                <input
+                  id="year-{{ i }}"
+                  formControlName="year"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label for="cgpa-{{ i }}">CGPA/Percentage:</label>
+                <input
+                  id="cgpa-{{ i }}"
+                  formControlName="cgpa"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <!-- Remove button inside each education item -->
+            <div class="mt-2">
+              <button
+                type="button"
+                (click)="removeEducation(i)"
+                class="btn btn-danger me-2"
+                *ngIf="education.controls.length > 1"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <!-- Add More Education button outside the loop -->
+          <div class="mt-3">
+            <button
+              type="button"
+              (click)="addEducation()"
+              class="btn btn-primary"
+            >
+              Add More Education
+            </button>
+          </div>
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary mx-1"
+            (click)="nextTab('basicDetails')"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextTab('workExperience')"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'workExperience'"
+        [class.active]="activeTab === 'workExperience'"
+      >
+        <!-- Work Experience -->
+        <fieldset formArrayName="workExperience" class="mb-4">
+          <div
+            *ngFor="let work of workExperience.controls; let i = index"
+            [formGroupName]="i"
+            class="mb-3 border p-3"
+          >
+            <div class="row">
+              <div class="col-md-7 mb-2">
+                <label for="company-{{ i }}">Company:</label>
+                <input
+                  id="company-{{ i }}"
+                  formControlName="company"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label for="designation-{{ i }}">Designation:</label>
+                <input
+                  id="designation-{{ i }}"
+                  formControlName="designation"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label for="from-{{ i }}">From:</label>
+                <input
+                  id="from-{{ i }}"
+                  type="date"
+                  formControlName="from"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label for="to-{{ i }}">To:</label>
+                <input
+                  id="to-{{ i }}"
+                  type="date"
+                  formControlName="to"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="mt-2">
+              <button
+                type="button"
+                (click)="removeWorkExperience(i)"
+                class="btn btn-danger me-2"
+                *ngIf="workExperience.controls.length > 1"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button
+              type="button"
+              (click)="addWorkExperience()"
+              class="btn btn-primary"
+            >
+              Add More Work Experience
+            </button>
+          </div>
+          <!-- </fieldset> -->
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary mx-1"
+            (click)="nextTab('education')"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextTab('technicalExperience')"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'technicalExperience'"
+        [class.active]="activeTab === 'technicalExperience'"
+      >
+        <!--Technical Experience-->
+        <fieldset formArrayName="technicalExperience" class="mb-4">
+          <div
+            *ngFor="let tech of technicalExperience.controls; let i = index"
+            [formGroupName]="i"
+            class="mb-3 border p-3"
+          >
+            <div class="row">
+              <div class="col-md-7 mb-2">
+                <label for="technology-{{ i }}">Technology:</label>
+                <input
+                  id="technology-{{ i }}"
+                  formControlName="technology"
+                  class="form-control"
+                />
+              </div>
+              <div class="col-md-7 mb-2">
+                <label>Proficiency:</label>
+                <div class="form-check">
+                  <input
+                    type="radio"
+                    id="beginner-{{ i }}"
+                    formControlName="proficiency"
+                    value="Beginner"
+                    class="form-check-input"
+                  />
+                  <label for="beginner-{{ i }}" class="form-check-label">
+                    Beginner
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    type="radio"
+                    id="mediator-{{ i }}"
+                    formControlName="proficiency"
+                    value="Mediator"
+                    class="form-check-input"
+                  />
+                  <label for="mediator-{{ i }}" class="form-check-label">
+                    Mediator
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input
+                    type="radio"
+                    id="expert-{{ i }}"
+                    formControlName="proficiency"
+                    value="Expert"
+                    class="form-check-input"
+                  />
+                  <label for="expert-{{ i }}" class="form-check-label">
+                    Expert
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <button
+                type="button"
+                (click)="removeTechnicalExperience(i)"
+                class="btn btn-danger me-2"
+                *ngIf="technicalExperience.controls.length > 1"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button
+              type="button"
+              (click)="addTechnicalExperience()"
+              class="btn btn-primary"
+            >
+              Add Technical Experience
+            </button>
+          </div>
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary mx-1"
+            (click)="nextTab('workExperience')"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextTab('knownLanguages')"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'knownLanguages'"
+        [class.active]="activeTab === 'knownLanguages'"
+      >
+        <!--Known Languages-->
+        <fieldset class="mb-4">
+          <div *ngFor="let language of languages" class="mb-3 border p-3">
+            <label class="mx-1">{{ language }} : </label>
+            <div class="form-check form-check-inline">
+              <input
+                type="checkbox"
+                id="{{ language }}-read"
+                class="form-check-input"
+                (change)="onLanguageChange(language, 'read')"
+                [checked]="languagesControl.get(language)?.get('read')?.value"
+              />
+              <label class="form-check-label" for="{{ language }}-read"
+                >Read</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                type="checkbox"
+                id="{{ language }}-write"
+                class="form-check-input"
+                (change)="onLanguageChange(language, 'write')"
+                [checked]="languagesControl.get(language)?.get('write')?.value"
+              />
+              <label class="form-check-label" for="{{ language }}-write"
+                >Write</label
+              >
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                type="checkbox"
+                id="{{ language }}-speak"
+                class="form-check-input"
+                (change)="onLanguageChange(language, 'speak')"
+                [checked]="languagesControl.get(language)?.get('speak')?.value"
+              />
+              <label class="form-check-label" for="{{ language }}-speak"
+                >Speak</label
+              >
+            </div>
+          </div>
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary mx-1"
+            (click)="nextTab('technicalExperience')"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextTab('preferences')"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        [class.show]="activeTab === 'preferences'"
+        [class.active]="activeTab === 'preferences'"
+      >
+        <!-- Preferences Section -->
+        <fieldset formGroupName="preferences" class="mb-4">
+          <div class="row">
+            <div class="col-md-7 mb-2">
+              <label for="preferredLocation">Preferred Location:</label>
+              <select
+                id="preferredLocation"
+                formControlName="preferredLocation"
+                class="form-control"
+              >
+                <option value="">Select Location</option>
+                <option *ngFor="let location of locations" [value]="location">
+                  {{ location }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="expectedCTC">Expected CTC:</label>
+              <input
+                id="expectedCTC"
+                formControlName="expectedCTC"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-7 mb-2">
+              <label for="currentCTC">Current CTC:</label>
+              <input
+                id="currentCTC"
+                formControlName="currentCTC"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="row">
+              <div class="col-md-7 mb-2">
+                <label for="noticePeriod">Notice Period:</label>
+                <input
+                  id="noticePeriod"
+                  formControlName="noticePeriod"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary mx-1"
+            (click)="nextTab('knownLanguages')"
+          >
+            Previous
+          </button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

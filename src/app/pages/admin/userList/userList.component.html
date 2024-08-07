@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <h3>User List</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userListData; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ user.basicDetails.name }}</td>
+        <td>{{ user.basicDetails.email }}</td>
+        <td>{{ user.basicDetails.contact }}</td>
+        <td>
+          <a class="btn btn-secondary m-1" href="/admin/user-details/{{i}}">View</a
+          ><button class="btn btn-danger m-1" type="button" (click)='deleteUserData(i)'>Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
